@@ -1,0 +1,6 @@
+{
+	"devDependencies": {
+		"@apollo/client": "^3.12.8",
+		"@types/node": "^22.12.0"
+	}
+}

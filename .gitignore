@@ -1,1 +1,10 @@
 .idea
+node_modules/
+.next/
+*.pyc
+__pycache__/
+*.log
+.DS_Store
+*.env
+.vscode/
+node_modules

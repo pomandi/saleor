@@ -3,8 +3,9 @@ version: "3.4"
 services:
   api:
     image: ghcr.io/saleor/saleor:3.20
+    command: ["uvicorn", "saleor.asgi:application", "--host=0.0.0.0", "--port=8000", "--workers=2", "--lifespan=off", "--ws=none", "--no-server-header", "--no-access-log", "--timeout-keep-alive=35", "--timeout-graceful-shutdown=30", "--limit-max-requests=10000"]
     ports:
-      - 8000:8000
+      - "8000:8000"
     restart: unless-stopped
     networks:
       - saleor-backend-tier
@@ -15,8 +16,8 @@ services:
       - redis
       - jaeger
     volumes:
-      # shared volume between worker and api for media
       - saleor-media:/app/media
+      - ./saleor:/app
     env_file:
       - common.env
       - backend.env
@@ -28,13 +29,34 @@ services:
   dashboard:
     image: ghcr.io/saleor/saleor-dashboard:latest
     ports:
-      - 9000:80
+      - "9000:80"
     restart: unless-stopped
+    networks:
+      - saleor-backend-tier
+
+  storefront:
+    build:
+      context: ./storefront
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - saleor-backend-tier
+    environment:
+      - NEXT_PUBLIC_API_URI=http://api:8000/graphql/
+      - NEXT_PUBLIC_SALEOR_API_URL=http://api:8000/graphql/
+      - NEXT_PUBLIC_CHECKOUT_URL=http://localhost:3000/checkout
+      - NEXT_PUBLIC_DEFAULT_CHANNEL=default-channel
+    volumes:
+      - ./storefront:/app:delegated
+      - /app/node_modules
+      - /app/.next
 
   db:
     image: library/postgres:15-alpine
     ports:
-      - 5432:5432
+      - "5432:5432"
     restart: unless-stopped
     networks:
       - saleor-backend-tier
@@ -48,7 +70,7 @@ services:
   redis:
     image: library/redis:7.0-alpine
     ports:
-      - 6379:6379
+      - "6379:6379"
     restart: unless-stopped
     networks:
       - saleor-backend-tier
@@ -68,8 +90,8 @@ services:
       - redis
       - mailpit
     volumes:
-      # shared volume between worker and api for media
       - saleor-media:/app/media
+      - ./saleor:/app
 
   jaeger:
     image: jaegertracing/all-in-one
@@ -91,8 +113,8 @@ services:
   mailpit:
     image: axllent/mailpit
     ports:
-      - 1025:1025 # smtp server
-      - 8025:8025 # web ui. Visit http://localhost:8025/ to check emails
+      - "1025:1025" # smtp server
+      - "8025:8025" # web ui. Visit http://localhost:8025/ to check emails
     restart: unless-stopped
     networks:
       - saleor-backend-tier
@@ -106,4 +128,4 @@ volumes:
 
 networks:
   saleor-backend-tier:
-    driver: bridge
+    driver: bridge 
