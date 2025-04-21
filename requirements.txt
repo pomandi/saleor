@@ -85,8 +85,7 @@ opentelemetry-semantic-conventions==0.50b0 ; python_version == "3.12"
 opentracing==2.4.0 ; python_version == "3.12"
 petl==1.7.15 ; python_version == "3.12"
 phonenumberslite==8.13.52 ; python_version == "3.12"
-pillow-avif-plugin
-pillow==11.1.0 ; python_version == "3.12"
+pillow
 posuto==2025.1.0 ; python_version == "3.12"
 prices==1.1.1 ; python_version == "3.12"
 promise==2.3 ; python_version == "3.12"
