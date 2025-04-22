@@ -245,6 +245,7 @@ JWT_MANAGER_PATH = os.environ.get(
 )
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
     "saleor.core.middleware.jwt_refresh_token_middleware",
@@ -303,6 +304,7 @@ INSTALLED_APPS = [
     "django_countries",
     "django_filters",
     "phonenumber_field",
+    "corsheaders",
 ]
 
 ENABLE_DJANGO_EXTENSIONS = get_bool_from_env("ENABLE_DJANGO_EXTENSIONS", False)
@@ -427,8 +429,7 @@ DEFAULT_DECIMAL_PLACES = 3
 DEFAULT_MAX_DIGITS = 12
 DEFAULT_CURRENCY_CODE_LENGTH = 3
 
-# The default max length for the display name of the
-# sender email address.
+# NEXT_PUBLIC_SALEOR_API_URL=https://saleor-5f11a4761db9.herokuapp.com/graphql/
 # Following the recommendation of https://tools.ietf.org/html/rfc5322#section-2.1.1
 DEFAULT_MAX_EMAIL_DISPLAY_NAME_LENGTH = 78
 
@@ -438,7 +439,7 @@ MAX_USER_ADDRESSES = int(os.environ.get("MAX_USER_ADDRESSES", 100))
 
 TEST_RUNNER = "saleor.tests.runner.PytestTestRunner"
 
-
+#
 PLAYGROUND_ENABLED = get_bool_from_env("PLAYGROUND_ENABLED", True)
 
 ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,saleor-5f11a4761db9.herokuapp.com"))
@@ -995,5 +996,31 @@ TRANSACTION_ITEMS_LIMIT = 100
 # Disable Django warnings regarding too long cache keys being incompatible with
 # memcached to avoid leaking key values.
 warnings.filterwarnings("ignore", category=CacheKeyWarning)
+
+CORS_ALLOW_ALL_ORIGINS = True  # Geliştirme için, prod'da sadece frontend domainini eklemen önerilir
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    # Gerekirse ek header'lar
+]
 
 
