@@ -33,7 +33,7 @@ cryptography==43.0.3
 deprecated==1.2.15
 dj-database-url==2.3.0
 dj-email-url==1.0.6
-django-appconf==1.0.6
+django-appconf==1.1.0
 django-cache-url==3.4.5
 django-celery-beat==2.7.0
 django-countries==7.6.1
