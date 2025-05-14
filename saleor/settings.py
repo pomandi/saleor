@@ -305,6 +305,7 @@ INSTALLED_APPS = [
     "django_filters",
     "phonenumber_field",
     "corsheaders",
+    "saleor_shopify_importer",
 ]
 
 ENABLE_DJANGO_EXTENSIONS = get_bool_from_env("ENABLE_DJANGO_EXTENSIONS", False)
